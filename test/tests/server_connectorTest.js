@@ -429,7 +429,7 @@ describe("Connector Server", function () {
 	
 	describe("/connector/updateSession", function () {
 		it("should update collections and tags of item saved via /saveItems", async function () {
-			Zotero.Debug.init(true);
+			Zotero.Debug.setStore(true);
 			
 			var collection1 = await createDataObject('collection');
 			var collection2 = await createDataObject('collection');
@@ -508,15 +508,18 @@ describe("Connector Server", function () {
 				}
 			);
 			
+			var log = await Zotero.Debug.get();
+			Zotero.Debug.setStore(false);
+			dump(log + "\n\n");
+			
 			assert.equal(req.status, 200);
 			assert.isTrue(collection1.hasItem(item.id));
 			assert.isTrue(item.hasTag("A"));
 			assert.isTrue(item.hasTag("B"));
-			
-			Zotero.Debug.init();
 		});
 		
 		it("should update collections and tags of PDF saved via /saveSnapshot", async function () {
+			Zotero.Debug.setStore(true);
 			var sessionID = Zotero.Utilities.randomString();
 			
 			var collection1 = await createDataObject('collection');
@@ -568,6 +571,10 @@ describe("Connector Server", function () {
 				}
 			);
 			
+			var log = await Zotero.Debug.get();
+			Zotero.Debug.setStore(false);
+			dump(log + "\n\n");
+			
 			assert.equal(req.status, 200);
 			assert.isTrue(collection1.hasItem(item.id));
 			assert.isTrue(item.hasTag("A"));
@@ -575,6 +582,7 @@ describe("Connector Server", function () {
 		});
 		
 		it("should update collections and tags of webpage saved via /saveSnapshot", async function () {
+			Zotero.Debug.setStore(true);
 			var sessionID = Zotero.Utilities.randomString();
 			
 			var collection1 = await createDataObject('collection');
@@ -624,10 +632,16 @@ describe("Connector Server", function () {
 				}
 			);
 			
+			var log = await Zotero.Debug.get();
+			Zotero.Debug.setStore(false);
+			dump(log + "\n\n");
+			
 			assert.equal(req.status, 200);
 			assert.isTrue(collection1.hasItem(item.id));
 			assert.isTrue(item.hasTag("A"));
 			assert.isTrue(item.hasTag("B"));
+			
+			throw new Error("STOP");
 		});
 	});
 	
