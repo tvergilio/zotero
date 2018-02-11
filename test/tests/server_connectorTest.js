@@ -429,6 +429,8 @@ describe("Connector Server", function () {
 	
 	describe("/connector/updateSession", function () {
 		it("should update collections and tags of item saved via /saveItems", async function () {
+			Zotero.Debug.init(true);
+			
 			var collection1 = await createDataObject('collection');
 			var collection2 = await createDataObject('collection');
 			await waitForItemsLoad(win);
@@ -510,6 +512,8 @@ describe("Connector Server", function () {
 			assert.isTrue(collection1.hasItem(item.id));
 			assert.isTrue(item.hasTag("A"));
 			assert.isTrue(item.hasTag("B"));
+			
+			Zotero.Debug.init();
 		});
 		
 		it("should update collections and tags of PDF saved via /saveSnapshot", async function () {
